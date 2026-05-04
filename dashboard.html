@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnglishSpace | Learning Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --success: #2ecc71;
+            --warning: #f1c40f;
+            --danger: #e74c3c;
+            --dark: #333;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            color: var(--dark);
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: white;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* BANNER */
+        .status-banner {
+            position: relative;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .banner-bg { position: absolute; top:0; left:0; width:100%; height:100%; z-index: -1; }
+        .bg-content { width: 100%; height: 100%; object-fit: cover; }
+        
+        .banner-overlay { 
+            position: absolute; top:0; left:0; width:100%; height:100%; 
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)); 
+            z-index: 0; 
+        }
+
+        .banner-content { position: relative; z-index: 1; padding: 20px; }
+        .banner-content h1 { font-size: 2.5rem; margin-bottom: 10px; }
+
+        .rank-display {
+            background: rgba(255,255,255,0.2);
+            padding: 12px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            display: inline-block;
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-weight: 800;
+        }
+
+        /* CSS PURE DIAGRAM */
+        .stats-container {
+            max-width: 1200px;
+            margin: -40px auto 20px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-card {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .chart-area {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 180px;
+            margin-top: 30px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 5px;
+        }
+
+        .bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            width: 30%;
+            height: 100%;
+            padding-bottom: 5px;
+        }
+
+        .bar-pure {
+            width: 100%;
+            max-width: 60px;
+            height: 0;
+            background: var(--primary);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: height 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 5px;
+        }
+
+        .bar-pure::after {
+            content: attr(data-score) "%";
+            position: absolute;
+            top: -25px;
+            width: 100%;
+            text-align: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+
+        .bar-label {
+            margin-top: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #718096;
+            text-transform: uppercase;
+        }
+
+        /* GRID CARDS */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 20px auto 50px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        .btn-main {
+            display: block;
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .btn-main:hover { background: #357abd; transform: scale(1.02); }
+
+        .btn-reset {
+            background: transparent;
+            border: 1.5px solid var(--danger);
+            color: var(--danger);
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-reset:hover { background: var(--danger); color: white; }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 15px; }
+            .nav-links { gap: 10px; font-size: 0.85rem; flex-wrap: wrap; justify-content: center; }
+            .banner-content h1 { font-size: 1.8rem; }
+            .status-banner { height: 350px; }
+            .stats-container { margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">EnglishSpace</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="lessons.html">Materials</a>
+            <a href="dashboard.html" style="color: var(--primary); font-weight: bold;">Quiz</a>
+            <a href="about.html">About</a>
+            <a href="profile.html">Profile(<span id="nav-user">Guest</span>)</a>
+            <a href="#" onclick="logout()" style="color: #e74c3c; font-weight: bold;">Log Out</a>
+        </div>
+    </nav>
+
+    <header class="status-banner">
+        <div class="banner-bg">
+            <video autoplay muted loop playsinline class="bg-content">
+                <source src="16202945-uhd_3840_2160_60fps.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+            <h1>Welcome Back, Scholar!</h1>
+            <p>Your current English proficiency status:</p>
+            <div class="rank-display">
+                <span id="rank-text">New Explorer 🌱</span>
+            </div>
+            <div id="score-info" style="margin-top: 20px; display: none; font-size: 0.9rem; opacity: 0.9;">
+                Latest Total Score: <span id="last-score-val" style="font-weight: bold;">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="stats-container">
+        <div class="stats-card">
+            <h3 style="margin:0">📊 Proficiency Stats</h3>
+            <p style="font-size: 0.8rem; color: #718096; margin-bottom: 10px;">Progress per level (Max 100%)</p>
+            
+            <div class="chart-area">
+                <div class="bar-wrapper">
+                    <div id="bar1" class="bar-pure" style="background: var(--success);" data-score="0"></div>
+                    <span class="bar-label">Level 1</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div id="bar2" class="bar-pure" style="background: var(--warning);" data-score="0"></div>
+                    <span class="bar-label">Level 2</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div id="bar3" class="bar-pure" style="background: #e67e22;" data-score="0"></div>
+                    <span class="bar-label">Level 3</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="hub-grid">
+        <div class="card">
+            <div>
+                <span style="font-size: 2.5rem;">📚</span>
+                <h3>Study Room</h3>
+                <p>Review vocabulary and grammar before your next challenge.</p>
+            </div>
+            <a href="lessons.html" class="btn-main">View Materials</a>
+        </div>
+
+        <div class="card">
+            <div>
+                <span style="font-size: 2.5rem;">🟢</span>
+                <h3 style="color: var(--success)">Level 1</h3>
+                <p>Beginner Quiz: Fundamentals and basic grammar.</p>
+            </div>
+            <a href="quiz1.html" class="btn-main">Take Test</a>
+        </div>
+
+        <div class="card">
+            <div>
+                <span style="font-size: 2.5rem;">🟡</span>
+                <h3 style="color: var(--warning)">Level 2</h3>
+                <p>Intermediate Quiz: Daily conversations and tenses.</p>
+            </div>
+            <a href="quiz2.html" class="btn-main">Take Test</a>
+        </div>
+
+        <div class="card">
+            <div>
+                <span style="font-size: 2.5rem;">🟠</span>
+                <h3 style="color: #e67e22">Level 3</h3>
+                <p>Pro Mastery: Complex structures and idioms.</p>
+            </div>
+            <a href="quiz3.html" class="btn-main">Take Test</a>
+        </div>
+    </main>
+
+    <div style="margin-bottom: 80px; text-align: center; padding: 20px;">
+        <p style="color: gray; margin-bottom: 15px;">Want to start over?</p>
+        <button class="btn-reset" onclick="clearData()">Reset All Progress</button>
+    </div>
+
+    <script>
+        // Fungsi Reset Data
+        function clearData() {
+            if(confirm("This will permanently delete your rank and all scores. Are you sure?")) {
+                localStorage.removeItem('userRank');
+                localStorage.removeItem('totalScore');
+                localStorage.removeItem('score_L1');
+                localStorage.removeItem('score_L2');
+                localStorage.removeItem('score_L3');
+                location.reload();
+            }
+        }
+
+        // Fungsi Logout
+        function logout() {
+            if(confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem("sudahLogin");
+                window.location.href = "login.html";
+            }
+        }
+
+        function applyBar(id, value) {
+    const el = document.getElementById(id);
+    if(el) {
+        const score = Math.max(0, parseInt(value) || 0);
+        const barHeight = Math.max(score, 5) + "%";
+
+        el.style.transition = "none";
+        el.style.height = "0";
+        el.setAttribute('data-score', score);
+        void el.offsetHeight; // Force reflow
+
+        requestAnimationFrame(() => {
+            el.style.transition = "height 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+            el.style.height = barHeight;
+        });
+    }
+}
+
+
+
+        // Update Seluruh Tampilan Dashboard
+        function updateDashboard() {
+            const savedRank = localStorage.getItem('userRank');
+            const savedScore = localStorage.getItem('totalScore');
+            const s1 = localStorage.getItem('score_L1') || 0;
+            const s2 = localStorage.getItem('score_L2') || 0;
+            const s3 = localStorage.getItem('score_L3') || 0;
+
+            if (savedRank) document.getElementById('rank-text').innerText = savedRank;
+            
+            if (savedScore !== null) {
+                const scoreInfo = document.getElementById('score-info');
+                const scoreVal = document.getElementById('last-score-val');
+                if(scoreInfo) scoreInfo.style.display = 'block';
+                if(scoreVal) scoreVal.innerText = savedScore;
+            }
+
+            // Jalankan animasi untuk tiap bar
+            applyBar('bar1', s1);
+            applyBar('bar2', s2);
+            applyBar('bar3', s3);
+        }
+
+        // Jalankan saat halaman siap
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Proteksi Login
+            if (localStorage.getItem("sudahLogin") !== "true") {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // 2. Tampilkan Nama User di Navigasi
+            const savedData = JSON.parse(localStorage.getItem('userProfile'));
+            const navUser = document.getElementById('nav-user');
+            if (savedData && savedData.name && navUser) {
+                navUser.innerText = savedData.name;
+            }
+
+            // 3. Render Data Dashboard
+            updateDashboard();
+        });
+    </script>
+</body>
+</html>

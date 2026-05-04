@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Space | Intermediate Mastery</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+        // Session Check
+        if (localStorage.getItem("sudahLogin") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+    <style>
+        /* Quiz Layout Enhancements */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin: 12px 0;
+            border: 2px solid #f1f5f9;
+            border-radius: 15px;
+            background: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .quiz-option:hover:not([disabled]) {
+            border-color: #4a90e2;
+            background: #f0f7ff;
+            transform: translateX(5px);
+        }
+        .quiz-option.correct {
+            background: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534;
+            font-weight: 600;
+        }
+        .quiz-option.wrong {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b;
+        }
+        .btn-main {
+            padding: 14px 30px;
+            border-radius: 50px;
+            border: none;
+            background: #4a90e2;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+        .btn-main:hover {
+            background: #357abd;
+            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">EnglishSpace</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="lessons.html">Materials</a>
+            <a href="dashboard.html" class="active">Quiz</a>
+            <a href="about.html">About</a>
+            <a href="profile.html">Profile(<span id="nav-user">Guest</span>)</a>
+            <a href="#" onclick="logout()" style="color: #e74c3c; font-weight: bold;">Log Out</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="quiz-box" class="card">
+            <div id="quiz-content">
+                <h2 style="color: #4a90e2; margin-bottom: 5px;">Intermediate Challenge 📘</h2>
+                <p id="progress" style="color: #94a3b8; font-weight: 600;">Question 1 of 30</p>
+                <hr style="margin: 25px 0; border: 0; border-top: 1px solid #f1f5f9;">
+                <h3 id="question-text" style="margin-bottom: 25px; min-height: 60px;">Loading question...</h3>
+                <div id="options-container"></div>
+                <button id="next-btn" class="btn-main" style="display:none; margin-top: 30px; width: 100%;" onclick="handleNext()">Next Question ➔</button>
+            </div>
+
+            <div id="result-content" style="display: none;">
+                <h1 id="rank-emoji" style="font-size: 6rem; margin: 0;">🎖️</h1>
+                <h2 id="rank-title" style="font-size: 2.2rem; color: #4a90e2; margin-top: 10px;">Rank Calculation...</h2>
+                <p id="final-score" style="font-size: 1.6rem; font-weight: 800; margin: 20px 0; color: #1e293b;"></p>
+                <p id="rank-desc" style="color: #64748b; line-height: 1.7; margin-bottom: 35px; max-width: 500px; margin-left: auto; margin-right: auto;"></p>
+                
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn-main" onclick="location.reload()" style="background: #94a3b8;">Retry Quiz</button>
+                    <a href="dashboard.html" class="btn-main" style="background: #22c55e; text-decoration: none; line-height: 1.2;">Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "She ___ lunch when the phone suddenly rang.", a: ["eats", "was eating", "has eaten"], c: 1 },
+            { q: "What is the opposite of 'Generous'?", a: ["Selfish", "Mean", "Reliable"], c: 1 },
+            { q: "I have been working here ___ 2010.", a: ["for", "since", "during"], c: 1 },
+            { q: "Which of these is an adverb?", a: ["Quick", "Quickly", "Quicker"], c: 1 },
+            { q: "If it rains tomorrow, we ___ stay at home.", a: ["would", "will", "are"], c: 1 },
+            { q: "This is the ___ book I have ever read.", a: ["goodest", "better", "best"], c: 2 },
+            { q: "Last night, we ___ to the new cinema.", a: ["go", "went", "have gone"], c: 1 },
+            { q: "A professional cook in a hotel is a...", a: ["Chef", "Chief", "Waiter"], c: 0 },
+            { q: "Which sentence is grammatically correct?", a: ["I no like milk", "I don't like milk", "I not like milk"], c: 1 },
+            { q: "Which of these is a conjunction?", a: ["But", "Run", "Quickly"], c: 0 },
+            { q: "I'm looking forward ___ you next week.", a: ["to see", "to seeing", "see"], c: 1 },
+            { q: "He is interested ___ learning Japanese.", a: ["in", "on", "at"], c: 0 },
+            { q: "The car ___ by the mechanic yesterday.", a: ["fixed", "was fixed", "is fixing"], c: 1 },
+            { q: "You ___ smoke here; it's strictly prohibited.", a: ["don't have to", "mustn't", "needn't"], c: 1 },
+            { q: "If I ___ you, I would tell him the truth.", a: ["am", "was", "were"], c: 2 },
+            { q: "He was late because he ___ his alarm.", a: ["forgot", "missed", "lost"], c: 1 },
+            { q: "We've run ___ of milk. Can you buy some?", a: ["out", "away", "off"], c: 0 },
+            { q: "The man ___ lives next door is a doctor.", a: ["which", "who", "whom"], c: 1 },
+            { q: "Could you tell me where ___?", a: ["is the station", "the station is", "station is"], c: 1 },
+            { q: "I wish I ___ more time to travel.", a: ["have", "had", "will have"], c: 1 },
+            { q: "She has ___ experience in teaching.", a: ["a lot of", "many", "a few"], c: 0 },
+            { q: "By the time we arrived, the movie ___.", a: ["already started", "had already started", "has already started"], c: 1 },
+            { q: "I can't afford ___ that expensive car.", a: ["to buy", "buying", "buy"], c: 0 },
+            { q: "It's ___ hot to play tennis outside.", a: ["too", "enough", "very"], c: 0 },
+            { q: "He suggested ___ to the park.", a: ["to go", "going", "go"], c: 1 },
+            { q: "This is the house ___ I was born.", a: ["which", "where", "that"], c: 1 },
+            { q: "The project was ___ difficult than I expected.", a: ["more", "most", "much"], c: 0 },
+            { q: "You should ___ your shoes before entering.", a: ["take off", "take out", "take up"], c: 0 },
+            { q: "I am not used ___ up so early.", a: ["to get", "to getting", "get"], c: 1 },
+            { q: "Neither Sarah ___ John attended the meeting.", a: ["or", "nor", "and"], c: 1 }
+        ];
+
+        let idx = 0; 
+        let score = 0;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedData = JSON.parse(localStorage.getItem('userProfile'));
+            if (savedData && savedData.name) {
+                document.getElementById('nav-user').innerText = savedData.name;
+            }
+            loadQuestion();
+        });
+
+        function loadQuestion() {
+            const item = questions[idx];
+            document.getElementById('progress').innerText = `Question ${idx + 1} of ${questions.length}`;
+            document.getElementById('question-text').innerText = item.q;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            document.getElementById('next-btn').style.display = 'none';
+
+            item.a.forEach((text, i) => {
+                const b = document.createElement('button');
+                b.className = 'quiz-option';
+                b.innerText = text;
+                b.onclick = () => {
+                    const allBtn = document.querySelectorAll('.quiz-option');
+                    allBtn.forEach(btn => btn.disabled = true);
+                    
+                    if(i === item.c) {
+                        b.classList.add('correct');
+                        score++;
+                    } else {
+                        b.classList.add('wrong');
+                        allBtn[item.c].classList.add('correct');
+                    }
+                    document.getElementById('next-btn').style.display = 'block';
+                };
+                container.appendChild(b);
+            });
+        }
+
+        function handleNext() {
+            idx++;
+            if(idx < questions.length) loadQuestion();
+            else showResult();
+        }
+
+        function showResult() {
+            document.getElementById('quiz-content').style.display = 'none';
+            const res = document.getElementById('result-content');
+            res.style.display = 'block';
+            
+            let rank, emoji, desc;
+            const percentage = (score / questions.length) * 100;
+
+            if (percentage >= 90) {
+                rank = "Fluent Professional"; emoji = "💎"; 
+                desc = "Outstanding! Your English is at a professional level. You're ready for advanced academic work.";
+            } else if (percentage >= 70) {
+                rank = "Confident Speaker"; emoji = "📘"; 
+                desc = "Well done! You have a solid grasp of intermediate English and can communicate effectively.";
+            } else if (percentage >= 50) {
+                rank = "Developing Learner"; emoji = "📙"; 
+                desc = "Good effort! You know the basics well, but you should review some advanced grammar rules.";
+            } else {
+                rank = "Beginner Explorer"; emoji = "🌱"; 
+                desc = "Keep going! Intermediate English is tough. Try reviewing the lessons and take the test again.";
+            }
+
+            document.getElementById('rank-emoji').innerText = emoji;
+            document.getElementById('rank-title').innerText = rank;
+            document.getElementById('final-score').innerText = `Final Score: ${score} / ${questions.length}`;
+            document.getElementById('rank-desc').innerText = desc;
+
+            // Store scores separately
+            localStorage.setItem('score_L2', score);
+            localStorage.setItem('userRank', rank);
+        }
+
+        function logout() {
+            if(confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem("sudahLogin");
+                window.location.href = "login.html";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Space | Pro Mastery</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+        // Session Check
+        if (localStorage.getItem("sudahLogin") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+    <style>
+        /* Pro Level Specific Styling */
+        :root {
+            --pro-gold: #f39c12;
+            --pro-dark: #d35400;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--pro-gold);
+        }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin: 12px 0;
+            border: 2px solid #f1f5f9;
+            border-radius: 15px;
+            background: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .quiz-option:hover:not([disabled]) {
+            border-color: var(--pro-gold);
+            background: #fffdf5;
+            transform: translateX(8px);
+        }
+
+        .quiz-option.correct {
+            background: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534;
+            font-weight: 600;
+        }
+
+        .quiz-option.wrong {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b;
+        }
+
+        .btn-main {
+            padding: 14px 30px;
+            border-radius: 50px;
+            border: none;
+            background: var(--pro-gold);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-main:hover {
+            background: var(--pro-dark);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        #progress-bar-inner {
+            height: 100%;
+            background: var(--pro-gold);
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">EnglishSpace</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="lessons.html">Materials</a>
+            <a href="dashboard.html" class="active">Quiz</a>
+            <a href="about.html">About</a>
+            <a href="profile.html">Profile(<span id="nav-user">Guest</span>)</a>
+            <a href="#" onclick="logout()" style="color: #e74c3c; font-weight: bold;">Log Out</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="quiz-area" class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="color: var(--pro-gold); margin: 0;">Level 3: Pro Mastery 👑</h2>
+                <span id="progress-text" style="color: #94a3b8; font-weight: 600;">1 / 30</span>
+            </div>
+            
+            <div style="width: 100%; height: 8px; background: #f1f5f9; border-radius: 10px; margin: 15px 0 25px 0;">
+                <div id="progress-bar-inner"></div>
+            </div>
+
+            <h3 id="question-text" style="margin-bottom: 25px; min-height: 60px; line-height: 1.5;">Loading Challenge...</h3>
+            <div id="options-container"></div>
+            <button id="next-btn" class="btn-main" style="display:none; width: 100%; margin-top: 25px;" onclick="handleNext()">Next Challenge ➔</button>
+        </div>
+
+        <div id="result-area" class="card" style="display: none; text-align: center;">
+            <h1 id="result-emoji" style="font-size: 6rem; margin: 0;">🏅</h1>
+            <h1 id="rank-title" style="margin: 10px 0; font-size: 2.5rem; color: var(--pro-gold);">---</h1>
+            <p id="rank-desc" style="font-size: 1.1rem; color: #64748b; line-height: 1.7; max-width: 500px; margin: 0 auto 30px auto;"></p>
+            
+            <div style="background: #f8fafc; padding: 20px; border-radius: 20px; margin-bottom: 30px;">
+                <p style="font-size: 1.1rem; margin: 0;">Final Proficiency Score:</p>
+                <h2 style="font-size: 3rem; margin: 5px 0; color: #1e293b;"><span id="final-pts">0</span><span style="font-size: 1.2rem; color: #94a3b8;"> / 30</span></h2>
+            </div>
+
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn-main" onclick="location.reload()" style="background: #94a3b8;">Retry Test</button>
+                <a href="dashboard.html" class="btn-main" style="text-decoration: none; line-height: 1.2;">View Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "What does the idiom 'beat around the bush' mean?", a: ["To avoid the main topic", "To plant trees", "To win a fight"], c: 0 },
+            { q: "The man ___ car was stolen reported it to the police.", a: ["who", "whom", "whose"], c: 2 },
+            { q: "If I ___ known you were coming, I would have baked a cake.", a: ["have", "had", "would"], c: 1 },
+            { q: "Select a synonym for 'Meticulous':", a: ["Careful", "Messy", "Aggressive"], c: 0 },
+            { q: "The meeting was ___ because of the rain.", a: ["called off", "called up", "called in"], c: 0 },
+            { q: "By this time next year, I ___ my degree.", a: ["will finish", "will have finished", "finished"], c: 1 },
+            { q: "Choose the correct Passive Voice: 'The chef prepared the meal.'", a: ["The meal prepared the chef", "The meal was prepared by the chef", "The chef was preparing"], c: 1 },
+            { q: "What does 'Break a leg' mean in theater?", a: ["Get an injury", "Good luck", "Quit the job"], c: 1 },
+            { q: "Which word is spelled correctly?", a: ["Miniture", "Miniature", "Minature"], c: 1 },
+            { q: "Which sentence uses the Third Conditional correctly?", a: ["If I study, I pass", "If I had studied, I would have passed"], c: 1 },
+            { q: "I suggested that he ___ the doctor immediately.", a: ["sees", "see", "saw"], c: 1 },
+            { q: "The company's profits have ___ significantly this year.", a: ["risen", "raised", "rose"], c: 0 },
+            { q: "Hardly ___ I entered the room when the lights went out.", a: ["did", "had", "have"], c: 1 },
+            { q: "She is very ___ to her work (dedicated).", a: ["committed", "committee", "commited"], c: 0 },
+            { q: "Which idiom means 'to disclose a secret'?", a: ["Spill the beans", "Cool as a cucumber", "Piece of cake"], c: 0 },
+            { q: "I look forward ___ your response.", a: ["to receive", "to receiving", "receiving"], c: 1 },
+            { q: "It's high time we ___ home.", a: ["go", "gone", "went"], c: 2 },
+            { q: "The weather was ___ cold that we stayed inside.", a: ["so", "such", "too"], c: 0 },
+            { q: "He ___ have been at the party; he's on vacation.", a: ["mustn't", "can't", "shouldn't"], c: 1 },
+            { q: "Despite ___ ill, she attended the ceremony.", a: ["being", "she was", "of being"], c: 0 },
+            { q: "To 'get over' something means to:", a: ["Climb it", "Recover from it", "Forget it"], c: 1 },
+            { q: "The word 'Obsolete' means:", a: ["Very fast", "No longer used", "Highly expensive"], c: 1 },
+            { q: "Seldom ___ we seen such a beautiful sunrise.", a: ["do", "have", "are"], c: 1 },
+            { q: "If I ___ rich, I would travel the world.", a: ["am", "was", "were"], c: 2 },
+            { q: "Which is a 'Phrasal Verb'?", a: ["Run quickly", "Give up", "Beautiful house"], c: 1 },
+            { q: "He apologized ___ being late.", a: ["for", "about", "at"], c: 0 },
+            { q: "I would rather you ___ talk so loudly.", a: ["didn't", "don't", "not"], c: 0 },
+            { q: "The house ___ built in 1920.", a: ["is", "was", "has"], c: 1 },
+            { q: "What is the synonym of 'Resilient'?", a: ["Strong/Tough", "Fragile", "Boring"], c: 0 },
+            { q: "He cut ___ while shaving.", a: ["him", "himself", "his"], c: 1 }
+        ];
+
+        let idx = 0; 
+        let score = 0;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedData = JSON.parse(localStorage.getItem('userProfile'));
+            if (savedData && savedData.name) {
+                document.getElementById('nav-user').innerText = savedData.name;
+            }
+            load();
+        });
+
+        function load() {
+            const item = questions[idx];
+            const progressPct = ((idx + 1) / questions.length) * 100;
+            
+            document.getElementById('progress-text').innerText = `${idx + 1} / ${questions.length}`;
+            document.getElementById('progress-bar-inner').style.width = progressPct + '%';
+            document.getElementById('question-text').innerText = item.q;
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            document.getElementById('next-btn').style.display = 'none';
+
+            item.a.forEach((text, i) => {
+                const b = document.createElement('button');
+                b.className = 'quiz-option';
+                b.innerText = text;
+                b.onclick = () => {
+                    const allBtn = document.querySelectorAll('.quiz-option');
+                    allBtn.forEach(btn => btn.disabled = true);
+                    
+                    if(i === item.c) { 
+                        b.classList.add('correct'); 
+                        score++; 
+                    } else { 
+                        b.classList.add('wrong'); 
+                        allBtn[item.c].classList.add('correct');
+                    }
+                    document.getElementById('next-btn').style.display = 'block';
+                };
+                container.appendChild(b);
+            });
+        }
+
+        function handleNext() {
+            idx++;
+            if(idx < questions.length) load();
+            else showResult();
+        }
+
+        function showResult() {
+            document.getElementById('quiz-area').style.display = 'none';
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('final-pts').innerText = score;
+            
+            const title = document.getElementById('rank-title');
+            const desc = document.getElementById('rank-desc');
+            const emoji = document.getElementById('result-emoji');
+
+            if(score >= 28) { 
+                emoji.innerText = "👑";
+                title.innerText = "English Legend"; 
+                desc.innerText = "Absolute mastery! You have a native-level understanding of the language structures and nuances."; 
+            } else if(score >= 22) { 
+                emoji.innerText = "💎";
+                title.innerText = "Advanced Scholar"; 
+                desc.innerText = "Excellent performance! You are very comfortable with complex structures and academic vocabulary."; 
+            } else if(score >= 15) { 
+                emoji.innerText = "📘";
+                title.innerText = "Upper Intermediate"; 
+                desc.innerText = "Good job! You've cleared the basics, but Pro level requires more focus on idioms and inversion."; 
+            } else { 
+                emoji.innerText = "🌱";
+                title.innerText = "Pro Apprentice"; 
+                desc.innerText = "The Pro level is a major step up. Review phrasal verbs and conditionals, then try the challenge again!"; 
+            }
+            
+            localStorage.setItem('score_L3', score);
+            localStorage.setItem('userRank', title.innerText);
+        }
+
+        function logout() {
+            if(confirm("Exit the Pro Challenge?")) {
+                localStorage.removeItem("sudahLogin");
+                window.location.href = "login.html";
+            }
+        }
+    </script>
+</body>
+</html>

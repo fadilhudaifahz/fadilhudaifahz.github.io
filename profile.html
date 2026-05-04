@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnglishSpace | My Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --primary-dark: #357abd;
+            --text: #333;
+            --danger: #e74c3c;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* --- VIDEO BACKGROUND --- */
+        .video-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-bg-content {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+        .nav-links a { text-decoration: none; color: #333; margin-left: 25px; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a.active { color: var(--primary) !important; font-weight: 800 !important; }
+
+        /* --- PROFILE CONTAINER --- */
+        .profile-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .profile-container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .profile-pic-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 25px;
+        }
+
+        #profileImage {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+            background: var(--primary); display: flex; align-items: center; justify-content: center;
+            font-size: 3.5rem; color: white; font-weight: 800; border: 5px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); overflow: hidden;
+        }
+
+        #profileImage img { width: 100%; height: 100%; object-fit: cover; }
+
+        .upload-btn {
+            position: absolute; bottom: 5px; right: 5px; background: var(--primary); color: white;
+            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; border: 3px solid white; transition: 0.3s;
+        }
+        .upload-btn:hover { transform: scale(1.1); background: var(--primary-dark); }
+
+        .input-group { text-align: left; margin-bottom: 25px; }
+        .input-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: #444; }
+        .input-group input, .input-group textarea {
+            width: 100%; padding: 14px 18px; border: 2px solid rgba(0,0,0,0.05); border-radius: 15px; 
+            font-family: inherit; box-sizing: border-box; outline: none; transition: 0.3s; background: rgba(255,255,255,0.8);
+        }
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); background: white; }
+
+        .btn-save {
+            background: var(--primary); color: white; border: none; padding: 16px; border-radius: 50px; 
+            font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%; font-size: 1rem;
+        }
+        .btn-save:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4); }
+        
+        .message { margin-top: 20px; font-size: 0.9rem; font-weight: 600; display: none; color: #27ae60; }
+    </style>
+</head>
+<body>
+
+<div class="video-bg-container">
+    <video autoplay muted loop playsinline class="video-bg-content">
+        <source src="15471256_1920_1080_30fps.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+<div class="video-overlay"></div>
+
+<nav>
+    <a href="index.html" class="logo">EnglishSpace</a>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="lessons.html">Materials</a>
+        <a href="dashboard.html">Quiz</a>
+        <a href="about.html">About</a>
+        <a href="profile.html" class="active">Profile(<span id="nav-user">Guest</span>)</a>
+        <a href="#" onclick="logout()" style="color: #e74c3c; font-weight: bold;">Log Out</a>
+    </div>
+</nav>
+
+<div class="profile-wrapper">
+    <div class="profile-container">
+        <div class="profile-pic-wrapper">
+            <div id="profileImage">U</div>
+            <label for="imageUpload" class="upload-btn">📷</label>
+            <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="previewImage(event)">
+        </div>
+
+        <h2 style="margin-bottom: 5px;">User Profile</h2>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 35px;">Manage your photo and personal information</p>
+
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name">
+        </div>
+
+        <div class="input-group">
+            <label>Short Bio</label>
+            <textarea id="bio" rows="3" placeholder="Tell us a bit about yourself..."></textarea>
+        </div>
+
+        <button class="btn-save" onclick="saveProfile()">Save Changes</button>
+        <p id="successMsg" class="message">✨ Profile updated successfully!</p>
+    </div>
+</div>
+
+<script>
+    // Initialize data on load
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedData = JSON.parse(localStorage.getItem('userProfile')) || {};
+        document.getElementById('fullName').value = savedData.name || '';
+        document.getElementById('bio').value = savedData.bio || '';
+        updateNavName(savedData.name);
+        if (savedData.image) {
+            displayImage(savedData.image);
+        } else {
+            updateInitials(savedData.name);
+        }
+    });
+
+    // Image Preview Function
+    function previewImage(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 300; 
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                
+                displayImage(compressedBase64);
+                
+                const savedData = JSON.parse(localStorage.getItem('userProfile')) || {};
+                savedData.image = compressedBase64;
+                localStorage.setItem('userProfile', JSON.stringify(savedData));
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function saveProfile() {
+        const nameInput = document.getElementById('fullName').value;
+        const bioInput = document.getElementById('bio').value;
+        const savedData = JSON.parse(localStorage.getItem('userProfile')) || {};
+        savedData.name = nameInput;
+        savedData.bio = bioInput;
+        localStorage.setItem('userProfile', JSON.stringify(savedData));
+        
+        updateNavName(nameInput);
+        if (!savedData.image) updateInitials(nameInput);
+
+        const msg = document.getElementById('successMsg');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 3000);
+    }
+
+    function displayImage(src) {
+        document.getElementById('profileImage').innerHTML = `<img src="${src}" alt="Profile">`;
+    }
+
+    function updateInitials(name) {
+        document.getElementById('profileImage').innerText = name ? name.charAt(0).toUpperCase() : 'U';
+    }
+
+    function updateNavName(name) {
+        const navUser = document.getElementById('nav-user');
+        if (navUser) navUser.innerText = name || 'Guest';
+    }
+
+    function logout() {
+        if(confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem("sudahLogin");
+            window.location.href = "login.html";
+        }
+    }
+</script>
+
+</body>
+</html>

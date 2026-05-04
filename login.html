@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnglishSpace | Sign In & Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --secondary: #67b26f;
+            --dark: #2c3e50;
+            --light: #f4f7f6;
+            --white: #ffffff;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Video Background Styling */
+        .header-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+        }
+
+        .bg-content {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: -1;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-card:hover { transform: translateY(-5px); }
+
+        .login-card h2 {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+        }
+
+        .login-card p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .input-group { text-align: left; margin-bottom: 20px; }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #edf2f7;
+            border-radius: 15px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 5px;
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.2);
+        }
+
+        .btn-main:hover {
+            background: #357abd;
+            transform: scale(1.02);
+        }
+
+        .toggle-link { margin-top: 25px; font-size: 0.85rem; color: #95a5a6; }
+        .toggle-link span { color: var(--primary); cursor: pointer; font-weight: 600; }
+
+        .message {
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+        .success { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
+    </style>
+</head>
+<body>
+
+    <div class="header-bg">
+        <video autoplay muted loop playsinline class="bg-content">
+            <source src="your-video-file.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="overlay"></div>
+
+    <div class="login-card">
+        <h2 id="formTitle">Welcome Back</h2>
+        <p id="formDesc">Please enter your details to sign in</p>
+
+        <p id="msg" class="message"></p>
+
+        <form id="authForm">
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" placeholder="••••••••" required>
+                    <button type="button" class="toggle-password" onclick="togglePassword()">SHOW</button>
+                </div>
+            </div>
+
+            <button type="submit" id="mainBtn" class="btn-main">Sign In</button>
+        </form>
+
+        <p class="toggle-link" id="toggleText">
+            Don't have an account? <span onclick="toggleForm()">Create Account</span>
+        </p>
+    </div>
+
+    <script>
+        let isLoggingIn = true;
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.toggle-password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.innerText = 'HIDE';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.innerText = 'SHOW';
+            }
+        }
+
+        function toggleForm() {
+            isLoggingIn = !isLoggingIn;
+            const title = document.getElementById('formTitle');
+            const desc = document.getElementById('formDesc');
+            const mainBtn = document.getElementById('mainBtn');
+            const toggleText = document.getElementById('toggleText');
+            const msg = document.getElementById('msg');
+
+            msg.style.display = "none";
+
+            if (isLoggingIn) {
+                title.innerText = "Welcome Back";
+                desc.innerText = "Please enter your details to sign in";
+                mainBtn.innerText = "Sign In";
+                toggleText.innerHTML = "Don't have an account? <span onclick='toggleForm()'>Create Account</span>";
+            } else {
+                title.innerText = "Join EnglishSpace";
+                desc.innerText = "Create your free account today";
+                mainBtn.innerText = "Register";
+                toggleText.innerHTML = "Already have an account? <span onclick='toggleForm()'>Sign In</span>";
+            }
+        }
+
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const msg = document.getElementById('msg');
+            let storedUsers = JSON.parse(localStorage.getItem("users")) || {};
+
+            if (isLoggingIn) {
+                if (storedUsers[user] && storedUsers[user] === pass) {
+                    localStorage.setItem("sudahLogin", "true");
+                    window.location.href = "index.html";
+                } else {
+                    msg.innerText = "Invalid username or password!";
+                    msg.className = "message error";
+                    msg.style.display = "block";
+                }
+            } else {
+                if (storedUsers[user]) {
+                    msg.innerText = "Username already exists!";
+                    msg.className = "message error";
+                    msg.style.display = "block";
+                } else {
+                    storedUsers[user] = pass;
+                    localStorage.setItem("users", JSON.stringify(storedUsers));
+                    msg.innerText = "Account created! You can login now.";
+                    msg.className = "message success";
+                    msg.style.display = "block";
+                    setTimeout(toggleForm, 1500);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
