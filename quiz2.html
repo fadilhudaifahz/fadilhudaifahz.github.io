@@ -76,6 +76,7 @@
 <body>
     <nav>
         <a href="index.html" class="logo">EnglishSpace</a>
+        <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="lessons.html">Materials</a>
@@ -215,12 +216,17 @@
 
             document.getElementById('rank-emoji').innerText = emoji;
             document.getElementById('rank-title').innerText = rank;
-            document.getElementById('final-score').innerText = `Final Score: ${score} / ${questions.length}`;
+            document.getElementById('final-score').innerText = `Final Score: ${score} / ${questions.length} (${Math.round(percentage)}%)`;
             document.getElementById('rank-desc').innerText = desc;
 
             // Store scores separately
             localStorage.setItem('score_L2', score);
             localStorage.setItem('userRank', rank);
+        }
+
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
         }
 
         function logout() {

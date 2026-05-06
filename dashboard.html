@@ -75,7 +75,7 @@
             font-weight: 800;
         }
 
-        /* CSS PURE DIAGRAM */
+        /* STATS CARD */
         .stats-container {
             max-width: 1200px;
             margin: -40px auto 20px;
@@ -114,12 +114,11 @@
         .bar-pure {
             width: 100%;
             max-width: 60px;
-            height: 0;
+            height: 5%; /* Default min height */
             background: var(--primary);
             border-radius: 8px 8px 0 0;
             position: relative;
             transition: height 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            min-height: 5px;
         }
 
         .bar-pure::after {
@@ -130,6 +129,7 @@
             text-align: center;
             font-weight: 800;
             font-size: 0.85rem;
+            color: var(--dark);
         }
 
         .bar-label {
@@ -225,8 +225,14 @@
             <div class="rank-display">
                 <span id="rank-text">New Explorer 🌱</span>
             </div>
-            <div id="score-info" style="margin-top: 20px; display: none; font-size: 0.9rem; opacity: 0.9;">
-                Latest Total Score: <span id="last-score-val" style="font-weight: bold;">0</span>
+            
+            <div id="score-info" style="margin-top: 20px; font-size: 0.9rem; opacity: 0.9;">
+                <div>Latest Total Score: <span id="last-score-val" style="font-weight: bold;">0</span></div>
+                <div style="margin-top: 8px;">Average Quiz Score: <span id="avg-score-val" style="font-weight: bold;">0%</span></div>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.3);">
+                    <div>Total All Quizzes: <span id="total-all-val" style="font-weight: bold;">0 / 90</span></div>
+                    <div style="margin-top: 8px;">Overall Average: <span id="overall-avg-val" style="font-weight: bold;">0%</span></div>
+                </div>
             </div>
         </div>
     </header>
@@ -256,7 +262,7 @@
     <main class="hub-grid">
         <div class="card">
             <div>
-                <span style="font-size: 2.5rem;">📚</span>
+                <span style="font-size: 2.5rem;">🖋️</span>
                 <h3>Study Room</h3>
                 <p>Review vocabulary and grammar before your next challenge.</p>
             </div>
@@ -268,6 +274,7 @@
                 <span style="font-size: 2.5rem;">🟢</span>
                 <h3 style="color: var(--success)">Level 1</h3>
                 <p>Beginner Quiz: Fundamentals and basic grammar.</p>
+                <p>Estimated Age Group: 10-18 years</p>
             </div>
             <a href="quiz1.html" class="btn-main">Take Test</a>
         </div>
@@ -277,6 +284,7 @@
                 <span style="font-size: 2.5rem;">🟡</span>
                 <h3 style="color: var(--warning)">Level 2</h3>
                 <p>Intermediate Quiz: Daily conversations and tenses.</p>
+                <p>Estimated Age Group: 13-18 years</p>
             </div>
             <a href="quiz2.html" class="btn-main">Take Test</a>
         </div>
@@ -286,6 +294,7 @@
                 <span style="font-size: 2.5rem;">🟠</span>
                 <h3 style="color: #e67e22">Level 3</h3>
                 <p>Pro Mastery: Complex structures and idioms.</p>
+                <p>Estimated Age Group: 15-18 years</p>
             </div>
             <a href="quiz3.html" class="btn-main">Take Test</a>
         </div>
@@ -297,7 +306,6 @@
     </div>
 
     <script>
-        // Fungsi Reset Data
         function clearData() {
             if(confirm("This will permanently delete your rank and all scores. Are you sure?")) {
                 localStorage.removeItem('userRank');
@@ -309,7 +317,6 @@
             }
         }
 
-        // Fungsi Logout
         function logout() {
             if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem("sudahLogin");
@@ -318,64 +325,69 @@
         }
 
         function applyBar(id, value) {
-    const el = document.getElementById(id);
-    if(el) {
-        const score = Math.max(0, parseInt(value) || 0);
-        const barHeight = Math.max(score, 5) + "%";
+            const el = document.getElementById(id);
+            if(el) {
+                const score = Math.max(0, parseInt(value) || 0);
+                // Min height 5% agar bar tidak hilang total saat skor 0
+                const barHeight = Math.max(score, 5) + "%";
 
-        el.style.transition = "none";
-        el.style.height = "0";
-        el.setAttribute('data-score', score);
-        void el.offsetHeight; // Force reflow
+                el.style.transition = "none";
+                el.style.height = "0";
+                el.setAttribute('data-score', score);
+                void el.offsetHeight; 
 
-        requestAnimationFrame(() => {
-            el.style.transition = "height 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-            el.style.height = barHeight;
-        });
-    }
-}
-
-
-
-        // Update Seluruh Tampilan Dashboard
-        function updateDashboard() {
-            const savedRank = localStorage.getItem('userRank');
-            const savedScore = localStorage.getItem('totalScore');
-            const s1 = localStorage.getItem('score_L1') || 0;
-            const s2 = localStorage.getItem('score_L2') || 0;
-            const s3 = localStorage.getItem('score_L3') || 0;
-
-            if (savedRank) document.getElementById('rank-text').innerText = savedRank;
-            
-            if (savedScore !== null) {
-                const scoreInfo = document.getElementById('score-info');
-                const scoreVal = document.getElementById('last-score-val');
-                if(scoreInfo) scoreInfo.style.display = 'block';
-                if(scoreVal) scoreVal.innerText = savedScore;
+                requestAnimationFrame(() => {
+                    el.style.transition = "height 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                    el.style.height = barHeight;
+                });
             }
-
-            // Jalankan animasi untuk tiap bar
-            applyBar('bar1', s1);
-            applyBar('bar2', s2);
-            applyBar('bar3', s3);
         }
 
-        // Jalankan saat halaman siap
+        function updateDashboard() {
+            const savedRank = localStorage.getItem('userRank') || "New Explorer 🌱";
+            const savedScore = localStorage.getItem('totalScore') || 0;
+            const s1 = parseInt(localStorage.getItem('score_L1')) || 0;
+            const s2 = parseInt(localStorage.getItem('score_L2')) || 0;
+            const s3 = parseInt(localStorage.getItem('score_L3')) || 0;
+
+            // Update Teks Rank
+            document.getElementById('rank-text').innerText = savedRank;
+            
+            // Perhitungan Persentase
+            const totalQuestionsPerLevel = 30;
+            const percent1 = Math.round((s1 / totalQuestionsPerLevel) * 100);
+            const percent2 = Math.round((s2 / totalQuestionsPerLevel) * 100);
+            const percent3 = Math.round((s3 / totalQuestionsPerLevel) * 100);
+            
+            const totalCorrect = s1 + s2 + s3;
+            const totalPossible = totalQuestionsPerLevel * 3;
+            const overallPercentage = Math.round((totalCorrect / totalPossible) * 100);
+            const avgScore = Math.round((percent1 + percent2 + percent3) / 3);
+
+            // Update UI
+            document.getElementById('last-score-val').innerText = savedScore;
+            document.getElementById('avg-score-val').innerText = `${avgScore}%`;
+            document.getElementById('total-all-val').innerText = `${totalCorrect} / ${totalPossible}`;
+            document.getElementById('overall-avg-val').innerText = `${overallPercentage}%`;
+
+            // Update Grafik Batang
+            applyBar('bar1', percent1);
+            applyBar('bar2', percent2);
+            applyBar('bar3', percent3);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Proteksi Login
             if (localStorage.getItem("sudahLogin") !== "true") {
                 window.location.href = "login.html";
                 return;
             }
 
-            // 2. Tampilkan Nama User di Navigasi
             const savedData = JSON.parse(localStorage.getItem('userProfile'));
             const navUser = document.getElementById('nav-user');
             if (savedData && savedData.name && navUser) {
                 navUser.innerText = savedData.name;
             }
 
-            // 3. Render Data Dashboard
             updateDashboard();
         });
     </script>

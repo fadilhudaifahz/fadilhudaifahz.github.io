@@ -9,13 +9,34 @@
     if (localStorage.getItem("sudahLogin") !== "true") {
         window.location.href = "login.html";
     }
+    
+    // Track visitor when page loads
+    window.addEventListener('load', function() {
+        trackLesson('idioms');
+    });
+    
+    function trackLesson(lessonName) {
+        const key = `visitors-${lessonName}`;
+        let count = localStorage.getItem(key) || 0;
+        count = parseInt(count) + 1;
+        localStorage.setItem(key, count);
+        
+        // Display the count on page
+        const displayElement = document.getElementById('visitor-count');
+        if (displayElement) {
+            displayElement.innerText = count;
+        }
+    }
 </script>
 </head>
 <body>
     <nav><a href="lessons.html" class="logo">← Back to Materials</a></nav>
     <div class="container">
         <div class="card" style="text-align: left; max-width: 950px; margin: auto;">
-            <h1>💡 Idiom Mastery: Complete Guide & Explanations</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1>💡 Idiom Mastery: Complete Guide & Explanations</h1>
+                <p style="color: #4a90e2; font-size: 0.9rem; font-weight: bold;">👥 Visitors: <span id="visitor-count">0</span></p>
+            </div>
             <p>Idioms are unique expressions whose meanings cannot be understood by translating word-for-word. Learning idioms means learning how native speakers visualize a situation. Here is an in-depth guide to essential English idioms.</p>
             <hr>
 

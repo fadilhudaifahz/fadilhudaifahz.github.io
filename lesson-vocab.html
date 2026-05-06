@@ -9,13 +9,34 @@
     if (localStorage.getItem("sudahLogin") !== "true") {
         window.location.href = "login.html";
     }
+    
+    // Track visitor when page loads
+    window.addEventListener('load', function() {
+        trackLesson('vocab');
+    });
+    
+    function trackLesson(lessonName) {
+        const key = `visitors-${lessonName}`;
+        let count = localStorage.getItem(key) || 0;
+        count = parseInt(count) + 1;
+        localStorage.setItem(key, count);
+        
+        // Display the count on page
+        const displayElement = document.getElementById('visitor-count');
+        if (displayElement) {
+            displayElement.innerText = count;
+        }
+    }
 </script>
 </head>
 <body>
     <nav><a href="lessons.html" class="logo">← Back to Materials</a></nav>
     <div class="container">
         <div class="card" style="text-align: left; max-width: 950px; margin: auto;">
-            <h1>📚 Technology & Digital Literacy Vocabulary</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1>📚 Technology & Digital Literacy Vocabulary</h1>
+                <p style="color: #4a90e2; font-size: 0.9rem; font-weight: bold;">👥 Visitors: <span id="visitor-count">0</span></p>
+            </div>
             <p>In the digital age, English is no longer just a communication tool; it is the fundamental language of the entire internet infrastructure. Understanding these terms is crucial for maintaining data security and professionalism in the modern workplace.</p>
             <hr>
 

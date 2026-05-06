@@ -11,11 +11,26 @@
         if (localStorage.getItem("sudahLogin") !== "true") {
             window.location.href = "login.html";
         }
+
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        function logout() {
+            localStorage.removeItem("sudahLogin");
+            window.location.href = "login.html";
+        }
     </script>
 </head>
 <body>
     <nav>
         <a href="index.html" class="logo">EnglishSpace</a>
+        <button class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="lessons.html">Materials</a>
@@ -62,38 +77,53 @@
             <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
             <h3 style="margin-bottom: 25px; text-align: center; color: var(--text-dark);">Connect With Us</h3>
-            
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                <a href="https://instagram.com/EnglishSpaceLearn" target="_blank" style="text-decoration: none; color: inherit;">
-                    <div class="card social-card" style="text-align: center; padding: 20px;">
-                        <span style="font-size: 2.5rem;">📸</span>
-                        <h4 style="margin: 10px 0; color: var(--primary-blue);">Instagram</h4>
-                        <p style="font-size: 0.85rem; color: gray;">@EnglishSpaceLearn</p>
-                    </div>
-                </a>
 
-                <a href="https://wa.me/6285829662183" target="_blank" style="text-decoration: none; color: inherit;">
-                    <div class="card social-card" style="text-align: center; padding: 20px;">
-                        <span style="font-size: 2.5rem;">💬</span>
-                        <h4 style="margin: 10px 0; color: #25d366;">WhatsApp</h4>
-                        <p style="font-size: 0.85rem; color: gray;">Chat with Admin</p>
-                    </div>
-                </a>
+<div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+    
+    <a href="https://instagram.com/english_space.id" target="_blank" style="text-decoration: none; color: inherit;">
+        <div class="card social-card" style="text-align: center; padding: 20px; transition: transform 0.3s;">
+            <span style="font-size: 2.5rem;">📸</span>
+            <h4 style="margin: 10px 0; color: var(--primary-blue);">Instagram</h4>
+            <p style="font-size: 0.85rem; color: gray;">@EnglishSpace</p>
+        </div>
+    </a>
 
-                <a href="https://discord.com/users/1347182223979450410" target="_blank" style="text-decoration: none; color: inherit;">
-                    <div class="card social-card" style="text-align: center; padding: 20px;">
-                        <span style="font-size: 2.5rem;">🎮</span>
-                        <h4 style="margin: 10px 0; color: #5865F2;">Discord</h4>
-                        <p style="font-size: 0.85rem; color: gray;">Join Community</p>
-                    </div>
-                </a>
-            </div>
+    <a href="https://tiktok.com/@fadilhudaifahzain" target="_blank" style="text-decoration: none; color: inherit;">
+        <div class="card social-card" style="text-align: center; padding: 20px; transition: transform 0.3s;">
+            <span style="font-size: 2.5rem;">🎬</span>
+            <h4 style="margin: 10px 0; color: #000000;">TikTok</h4>
+            <p style="font-size: 0.85rem; color: gray;">@EnglishSpace.id</p>
+        </div>
+    </a>
 
-            <div style="margin-top: 30px; text-align: center; padding: 20px; background: #f8fbff; border-radius: 15px; border: 1px solid #e1efff;">
-                <p>📍 <strong>Location:</strong> Jember, East Java, Indonesia</p>
-            </div>
-        </article>
-    </main>
+    <a href="https://wa.me/6285829662183" target="_blank" style="text-decoration: none; color: inherit;">
+        <div class="card social-card" style="text-align: center; padding: 20px; transition: transform 0.3s;">
+            <span style="font-size: 2.5rem;">💬</span>
+            <h4 style="margin: 10px 0; color: #25d366;">WhatsApp</h4>
+            <p style="font-size: 0.85rem; color: gray;">Chat with Admin</p>
+        </div>
+    </a>
+
+    <a href="https://discord.com/users/1347182223979450410" target="_blank" style="text-decoration: none; color: inherit;">
+        <div class="card social-card" style="text-align: center; padding: 20px; transition: transform 0.3s;">
+            <span style="font-size: 2.5rem;">🎮</span>
+            <h4 style="margin: 10px 0; color: #5865F2;">Discord</h4>
+            <p style="font-size: 0.85rem; color: gray;">Join Community</p>
+        </div>
+    </a>
+</div>
+
+<style>
+    @media (min-width: 768px) {
+        .grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+    .social-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+</style>
 
     <footer style="margin-top: 50px; text-align: center; padding-bottom: 30px;">
         <p>&copy; 2026 EnglishSpace Learning Platform. Made for learners.</p>

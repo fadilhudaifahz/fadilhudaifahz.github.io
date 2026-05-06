@@ -12,26 +12,12 @@
         if (localStorage.getItem("sudahLogin") !== "true") {
             window.location.href = "login.html";
         }
-
-        function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        }
-
-        function logout() {
-            localStorage.removeItem("sudahLogin");
-            window.location.href = "login.html";
-        }
     </script>
 </head>
 <body>
     <nav>
         <a href="index.html" class="logo">EnglishSpace</a>
-        <button class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+        <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
         <div class="nav-links">
             <a href="index.html" class="active">Home</a>
             <a href="lessons.html">Materials</a>
@@ -136,6 +122,11 @@
             // Fetch visitor count
             getVisitors();
         });
+
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
 
         // 2. Logout Function
         function logout() {
