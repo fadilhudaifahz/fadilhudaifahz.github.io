@@ -193,6 +193,8 @@
         </div>
     </main>
 
+    <p style="text-align: center; margin-top: 20px; color: #666;">🌐 Page Visitors: <span id="page-visitor-count">0</span></p>
+
     <script>
         // Load user name from stored profile
         document.addEventListener('DOMContentLoaded', () => {
@@ -204,6 +206,23 @@
             // Display visitor counts for each lesson
             displayVisitorCounts();
         });
+
+        // Track page visitor
+        window.addEventListener('load', function() {
+            trackPage('lessons');
+        });
+
+        function trackPage(pageName) {
+            const key = `visitors-${pageName}`;
+            let count = localStorage.getItem(key) || 0;
+            count = parseInt(count) + 1;
+            localStorage.setItem(key, count);
+            
+            const displayElement = document.getElementById('page-visitor-count');
+            if (displayElement) {
+                displayElement.innerText = count;
+            }
+        }
 
         // Function to display visitor counts from localStorage
         function displayVisitorCounts() {

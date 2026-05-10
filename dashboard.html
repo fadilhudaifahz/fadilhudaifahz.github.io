@@ -275,6 +275,7 @@
                 <h3 style="color: var(--success)">Level 1</h3>
                 <p>Beginner Quiz: Fundamentals and basic grammar.</p>
                 <p>Estimated Age Group: 10-18 years</p>
+                <p style="color: #666; font-size: 0.85rem;">👥 Visitors: <span id="visitors-quiz1">0</span></p>
             </div>
             <a href="quiz1.html" class="btn-main">Take Test</a>
         </div>
@@ -285,6 +286,7 @@
                 <h3 style="color: var(--warning)">Level 2</h3>
                 <p>Intermediate Quiz: Daily conversations and tenses.</p>
                 <p>Estimated Age Group: 13-18 years</p>
+                <p style="color: #666; font-size: 0.85rem;">👥 Visitors: <span id="visitors-quiz2">0</span></p>
             </div>
             <a href="quiz2.html" class="btn-main">Take Test</a>
         </div>
@@ -295,6 +297,7 @@
                 <h3 style="color: #e67e22">Level 3</h3>
                 <p>Pro Mastery: Complex structures and idioms.</p>
                 <p>Estimated Age Group: 15-18 years</p>
+                <p style="color: #666; font-size: 0.85rem;">👥 Visitors: <span id="visitors-quiz3">0</span></p>
             </div>
             <a href="quiz3.html" class="btn-main">Take Test</a>
         </div>
@@ -389,7 +392,33 @@
             }
 
             updateDashboard();
+            displayQuizVisitors();
         });
+
+        function displayQuizVisitors() {
+            const quizzes = ['quiz1', 'quiz2', 'quiz3'];
+            quizzes.forEach(quiz => {
+                const count = localStorage.getItem(`visitors-${quiz}`) || 0;
+                const element = document.getElementById(`visitors-${quiz}`);
+                if (element) {
+                    element.innerText = count;
+                }
+            });
+        }
+
+        // Track visitor
+        window.addEventListener('load', function() {
+            trackPage('dashboard');
+        });
+
+        function trackPage(pageName) {
+            const key = `visitors-${pageName}`;
+            let count = localStorage.getItem(key) || 0;
+            count = parseInt(count) + 1;
+            localStorage.setItem(key, count);
+            
+            // No display element, as dashboard doesn't have footer
+        }
     </script>
 </body>
 </html>

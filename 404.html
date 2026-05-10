@@ -156,6 +156,20 @@
                 document.getElementById('visitor-count').innerText = "Online";
             }
         }
+
+        // Track page visitor
+        window.addEventListener('load', function() {
+            trackPage('404');
+        });
+
+        function trackPage(pageName) {
+            const key = `visitors-${pageName}`;
+            let count = localStorage.getItem(key) || 0;
+            count = parseInt(count) + 1;
+            localStorage.setItem(key, count);
+            
+            // No display, as it uses API for total
+        }
     </script>
 </body>
 </html>
