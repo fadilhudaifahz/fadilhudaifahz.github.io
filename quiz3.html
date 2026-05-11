@@ -163,7 +163,18 @@
         let idx = 0; 
         let score = 0;
 
+        // Track visitor for quiz3
+        function trackQuizVisitor() {
+            const key = 'visitors-quiz3';
+            let count = localStorage.getItem(key) || 0;
+            count = parseInt(count) + 1;
+            localStorage.setItem(key, count);
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            // Track this visitor
+            trackQuizVisitor();
+            
             const savedData = JSON.parse(localStorage.getItem('userProfile'));
             if (savedData && savedData.name) {
                 document.getElementById('nav-user').innerText = savedData.name;
