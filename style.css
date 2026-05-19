@@ -1,4 +1,14 @@
 /* =========================================
+   GLOBAL STYLE SHEET
+   =========================================
+   style.css ini digunakan oleh hampir semua halaman HTML di proyek:
+   index.html, lessons.html, about.html, dashboard.html,
+   quiz1.html, quiz2.html, quiz3.html, profile.html, login.html.
+   Komentar berikut menjelaskan kegunaan tiap blok gaya dan
+   area halaman tempat gaya tersebut biasanya dipakai.
+*/
+
+/* =========================================
    VARIABLES & RESET
    ========================================= */
 
@@ -87,10 +97,10 @@ nav {
 }
 
 /* Efek hover pada kartu untuk memberi interaksi visual.
-   Perhatikan: var(--primary) tidak didefinisikan di root. */
+   Digunakan pada bagian About, materi, dan tampilan rank. */
 .card:hover {
     transform: translateY(-12px) scale(1.02);
-    border-color: var(--primary);
+    border-color: var(--primary-blue);
 }
 
 /* Gaya tampilan rangkuman atau rank dengan efek kaca kabur. */
@@ -104,10 +114,10 @@ nav {
     letter-spacing: 1px;
 }
 
-/* Update di bagian CSS */
+/* Styling progress bar yang digunakan di Dashboard dan kuis.
+   Memperbaiki warna gradien agar memakai variable yang terdefinisi. */
 .bar-pure {
-    /* ... style sebelumnya ... */
-    background: linear-gradient(to top, var(--primary), #81b1ff) !important;
+    background: linear-gradient(to top, var(--primary-blue), #81b1ff) !important;
     box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
 }
 
