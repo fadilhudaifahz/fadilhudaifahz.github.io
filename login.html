@@ -273,25 +273,5 @@
         });
     </script>
 
-    <script>
-        // Track login page visits using localStorage.
-        window.addEventListener('load', function() {
-            trackPage('login');
-        });
-
-        function trackPage(pageName) {
-            const key = `visitors-${pageName}`;
-            let count = localStorage.getItem(key) || 0;
-            count = parseInt(count) + 1;
-            localStorage.setItem(key, count);
-            
-            const displayElement = document.getElementById('visitor-count');
-            if (displayElement) {
-                displayElement.innerText = count;
-            }
-        }
-    </script>
-
-    <p style="text-align: center; margin-top: 20px; color: #666;">🌐 Visitors: <span id="visitor-count">0</span></p>
 </body>
 </html>
