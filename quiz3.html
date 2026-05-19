@@ -163,7 +163,7 @@
         let idx = 0; 
         let score = 0;
 
-        // Track visitor for quiz3
+        // Track visitor for quiz3 and increment localStorage count.
         function trackQuizVisitor() {
             const key = 'visitors-quiz3';
             let count = localStorage.getItem(key) || 0;
@@ -172,7 +172,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Track this visitor
             trackQuizVisitor();
             
             const savedData = JSON.parse(localStorage.getItem('userProfile'));
@@ -182,6 +181,7 @@
             load();
         });
 
+        // Load current pro-level question and answer options.
         function load() {
             const item = questions[idx];
             
@@ -213,12 +213,14 @@
             });
         }
 
+        // Move to the next question, or show final results if quiz is complete.
         function handleNext() {
             idx++;
             if(idx < questions.length) load();
             else showResult();
         }
 
+        // Display final quiz rank and save the result.
         function showResult() {
             document.getElementById('quiz-content').style.display = 'none';
             document.getElementById('result-area').style.display = 'block';
@@ -251,11 +253,13 @@
             localStorage.setItem('userRank', title.innerText);
         }
 
+        // Toggle mobile navigation.
         function toggleMenu() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.classList.toggle('active');
         }
 
+        // Logout from Pro quiz page.
         function logout() {
             if(confirm("Exit the Pro Challenge?")) {
                 localStorage.removeItem("sudahLogin");

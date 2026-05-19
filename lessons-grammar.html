@@ -6,22 +6,24 @@
     <title>Grammar: Advanced Conditionals</title>
     <link rel="stylesheet" href="style.css">
     <script>
+    // Session check: Redirect user to login if they are not authenticated.
     if (localStorage.getItem("sudahLogin") !== "true") {
         window.location.href = "login.html";
     }
     
-    // Track visitor when page loads
+    // Track visitor when page loads and save count in localStorage.
     window.addEventListener('load', function() {
         trackLesson('grammar');
     });
     
+    // count unique lesson visits per page using localStorage key.
     function trackLesson(lessonName) {
         const key = `visitors-${lessonName}`;
         let count = localStorage.getItem(key) || 0;
         count = parseInt(count) + 1;
         localStorage.setItem(key, count);
         
-        // Display the count on page
+        // Display the count on the lesson page if the element exists.
         const displayElement = document.getElementById('visitor-count');
         if (displayElement) {
             displayElement.innerText = count;

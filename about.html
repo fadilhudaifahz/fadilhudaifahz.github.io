@@ -7,23 +7,20 @@
     <link rel="stylesheet" href="style.css">
     
     <script>
-        // Session check
+        // Redirect user to login page when they are not authenticated.
         if (localStorage.getItem("sudahLogin") !== "true") {
             window.location.href = "login.html";
         }
 
+        // Toggle the mobile navigation menu on small screens.
         function toggleMenu() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.classList.toggle('active');
         }
-
-        function logout() {
-            localStorage.removeItem("sudahLogin");
-            window.location.href = "login.html";
-        }
     </script>
 </head>
 <body>
+    <!-- Navigation bar dengan tautan ke halaman utama, pelajaran, kuis, dan profil. -->
     <nav>
         <a href="index.html" class="logo">EnglishSpace</a>
         <button class="hamburger" onclick="toggleMenu()">
@@ -41,6 +38,7 @@
         </div>
     </nav>
 
+    <!-- Header section with a background video and page title. -->
     <header class="library-header video-header">
         <div class="header-bg">
             <video autoplay muted loop playsinline class="bg-content">
@@ -113,6 +111,9 @@
     </a>
 </div>
 
+<!-- Visitor counter display for the About page. -->
+<p style="text-align: center; margin-top: 20px; color: #666;">🌐 Visitors: <span id="visitor-count">0</span></p>
+
 <style>
     @media (min-width: 768px) {
         .grid {
@@ -135,7 +136,7 @@
     </footer>
 
     <script>
-        // Load user data on initialization
+        // Load saved profile data and display the user's name in the navigation.
         document.addEventListener('DOMContentLoaded', () => {
             const savedData = JSON.parse(localStorage.getItem('userProfile'));
             if (savedData && savedData.name) {
@@ -144,7 +145,7 @@
             }
         });
 
-        // Logout Function
+        // Logout function used by the navigation menu.
         function logout() {
             if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem("sudahLogin");
@@ -152,11 +153,12 @@
             }
         }
 
-        // Track visitor
+        // Run visitor tracking when the page loads.
         window.addEventListener('load', function() {
             trackPage('about');
         });
 
+        // Save visitor counts in localStorage and update the page counter.
         function trackPage(pageName) {
             const key = `visitors-${pageName}`;
             let count = localStorage.getItem(key) || 0;

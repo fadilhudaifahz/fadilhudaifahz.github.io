@@ -197,8 +197,10 @@
     </div>
 
     <script>
+        // Flag untuk mengetahui apakah form sedang dalam mode login atau registrasi.
         let isLoggingIn = true;
 
+        // Toggle password visibility on the login/register form.
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const toggleBtn = document.querySelector('.toggle-password');
@@ -211,6 +213,7 @@
             }
         }
 
+        // Switch between login and register form states.
         function toggleForm() {
             isLoggingIn = !isLoggingIn;
             const title = document.getElementById('formTitle');
@@ -218,7 +221,7 @@
             const mainBtn = document.getElementById('mainBtn');
             const toggleText = document.getElementById('toggleText');
             const msg = document.getElementById('msg');
-
+            
             msg.style.display = "none";
 
             if (isLoggingIn) {
@@ -234,6 +237,7 @@
             }
         }
 
+        // Form submit event untuk login atau register.
         document.getElementById('authForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const user = document.getElementById('username').value;
@@ -242,6 +246,7 @@
             let storedUsers = JSON.parse(localStorage.getItem("users")) || {};
 
             if (isLoggingIn) {
+                // Cek kredensial pengguna dengan data yang tersimpan.
                 if (storedUsers[user] && storedUsers[user] === pass) {
                     localStorage.setItem("sudahLogin", "true");
                     window.location.href = "index.html";
@@ -251,6 +256,7 @@
                     msg.style.display = "block";
                 }
             } else {
+                // Jika registrasi, pastikan username belum terdaftar.
                 if (storedUsers[user]) {
                     msg.innerText = "Username already exists!";
                     msg.className = "message error";
@@ -268,7 +274,7 @@
     </script>
 
     <script>
-        // Track visitor
+        // Track login page visits using localStorage.
         window.addEventListener('load', function() {
             trackPage('login');
         });

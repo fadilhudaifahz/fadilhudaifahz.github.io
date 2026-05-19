@@ -180,7 +180,7 @@
 </div>
 
 <script>
-    // Initialize data on load
+    // Initialize profile data when page is ready.
     window.addEventListener('DOMContentLoaded', () => {
         const savedData = JSON.parse(localStorage.getItem('userProfile')) || {};
         document.getElementById('fullName').value = savedData.name || '';
@@ -193,7 +193,7 @@
         }
     });
 
-    // Image Preview Function
+    // Preview uploaded profile image and save a compressed version in localStorage.
     function previewImage(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -222,6 +222,7 @@
         reader.readAsDataURL(file);
     }
 
+    // Save profile name and bio information to localStorage.
     function saveProfile() {
         const nameInput = document.getElementById('fullName').value;
         const bioInput = document.getElementById('bio').value;
@@ -238,24 +239,29 @@
         setTimeout(() => msg.style.display = 'none', 3000);
     }
 
+    // Display the uploaded profile image in the page.
     function displayImage(src) {
         document.getElementById('profileImage').innerHTML = `<img src="${src}" alt="Profile">`;
     }
 
+    // Show the user's initial if no profile image is set.
     function updateInitials(name) {
         document.getElementById('profileImage').innerText = name ? name.charAt(0).toUpperCase() : 'U';
     }
 
+    // Update the navigation username display.
     function updateNavName(name) {
         const navUser = document.getElementById('nav-user');
         if (navUser) navUser.innerText = name || 'Guest';
     }
 
+    // Toggle the mobile navigation menu.
     function toggleMenu() {
         const navLinks = document.querySelector('.nav-links');
         navLinks.classList.toggle('active');
     }
 
+    // Logout function: clear login state and redirect to login page.
     function logout() {
         if(confirm("Are you sure you want to log out?")) {
             localStorage.removeItem("sudahLogin");

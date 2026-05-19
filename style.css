@@ -1,6 +1,9 @@
 /* =========================================
    VARIABLES & RESET
    ========================================= */
+
+/* Global CSS variables digunakan untuk warna dan transisi
+   agar gaya konsisten dan mudah diubah di satu tempat. */
 :root {
     --primary-blue: #4a90e2;
     --light-blue: #ebf3ff;
@@ -10,6 +13,8 @@
     --transition: all 0.3s ease;
 }
 
+/* Reset dasar untuk semua elemen agar margin dan padding default
+   tidak mengganggu layout halaman. */
 * {
     margin: 0;
     padding: 0;
@@ -17,6 +22,8 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Gaya body umum untuk latar belakang, teks, dan mencegah
+   scrollbar horizontal yang tidak diinginkan. */
 body {
     background-color: var(--light-blue);
     color: var(--text-dark);
@@ -45,6 +52,9 @@ body {
 /* =========================================
    NAVIGATION
    ========================================= */
+
+/* Gaya bar navigasi atas, dengan posisi sticky agar tetap terlihat
+   saat halaman digulir. */
 nav {
     display: flex;
     justify-content: space-between;
@@ -57,6 +67,7 @@ nav {
     z-index: 1000;
 }
 
+/* Logo utama navigasi. */
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
@@ -64,20 +75,25 @@ nav {
     text-decoration: none;
 }
 
+/* Container untuk tautan navigasi dengan jarak antar link. */
 .nav-links {
     display: flex;
     gap: 25px;
 }
 
+/* Kartu umum digunakan di beberapa bagian halaman. */
 .card {
     border: 1px solid #f0f0f0;
 }
 
+/* Efek hover pada kartu untuk memberi interaksi visual.
+   Perhatikan: var(--primary) tidak didefinisikan di root. */
 .card:hover {
     transform: translateY(-12px) scale(1.02);
     border-color: var(--primary);
 }
 
+/* Gaya tampilan rangkuman atau rank dengan efek kaca kabur. */
 .rank-display {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
@@ -99,6 +115,7 @@ nav {
 #bar2 { background: linear-gradient(to top, #f1c40f, #f7dc6f) !important; }
 #bar3 { background: linear-gradient(to top, #e67e22, #eb984e) !important; }
 
+/* Tombol hamburger untuk menu mobile. Default disembunyikan di desktop. */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -108,6 +125,7 @@ nav {
     padding: 5px;
 }
 
+/* Garis-garis pada tombol hamburger. */
 .hamburger span {
     width: 25px;
     height: 3px;
@@ -116,6 +134,7 @@ nav {
     transition: 0.3s;
 }
 
+/* Link navigasi dasar. */
 .nav-links a {
     text-decoration: none;
     color: var(--text-dark);
@@ -123,6 +142,7 @@ nav {
     transition: var(--transition);
 }
 
+/* Warna saat mouse hover di atas tautan navigasi. */
 .nav-links a:hover {
     color: var(--primary-blue);
 }
@@ -130,6 +150,8 @@ nav {
 /* =========================================
    HERO & HEADERS
    ========================================= */
+
+/* Gambar hero statis, jika digunakan di tempat lain. */
 .hero-img {
     max-width: 220px;
     width: 100%;
@@ -168,6 +190,9 @@ h1 {
 /* =========================================
    HERO VIDEO BACKGROUND
    ========================================= */
+
+/* Kontainer hero dengan video di latar belakang.
+   Area ini menutupi sebagian besar layar awal. */
 .hero-container {
     position: relative;
     width: 100%;
@@ -180,6 +205,7 @@ h1 {
     border-radius: 0 0 50px 50px;
 }
 
+/* Kontainer video latar belakang yang menempel di seluruh area hero. */
 .video-background {
     position: absolute;
     top: 0;
@@ -189,13 +215,14 @@ h1 {
     z-index: -2;
 }
 
+/* Video akan mengisi area container tanpa distorsi. */
 #hero-video {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Video akan memenuhi area tanpa gepeng */
 }
 
-/* Overlay biar teks nggak 'balapan' sama warna video */
+/* Overlay gelap agar teks lebih mudah dibaca di atas video. */
 .video-overlay {
     position: absolute;
     top: 0;
@@ -206,12 +233,13 @@ h1 {
     z-index: -1;
 }
 
+/* Teks hero ditempatkan di atas video dan overlay. */
 .hero-content {
     z-index: 1;
     text-align: center;
 }
 
-/* Pastikan judul Hero jadi Putih agar kontras */
+/* Judul hero dibuat putih agar selalu kontras. */
 .hero-content h1 {
     color: #ffffff !important;
     text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
@@ -222,7 +250,7 @@ h1 {
     font-weight: 500;
 }
 
-/* Penyesuaian Mobile */
+/* Responsive untuk layar kecil agar hero tidak terlalu tinggi. */
 @media (max-width: 768px) {
     .hero-container {
         height: 60vh;

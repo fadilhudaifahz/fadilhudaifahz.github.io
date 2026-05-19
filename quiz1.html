@@ -152,7 +152,7 @@
         let idx = 0; 
         let score = 0;
 
-        // Track visitor for quiz1
+        // Track visitor for quiz1: simpan kunjungan halaman di localStorage.
         function trackQuizVisitor() {
             const key = 'visitors-quiz1';
             let count = localStorage.getItem(key) || 0;
@@ -160,9 +160,8 @@
             localStorage.setItem(key, count);
         }
 
-        // Load Username on Nav
+        // Load Username on Nav and initialize quiz when DOM siap.
         window.addEventListener('DOMContentLoaded', () => {
-            // Track this visitor
             trackQuizVisitor();
             
             const savedData = JSON.parse(localStorage.getItem('userProfile'));
@@ -172,6 +171,7 @@
             loadQuestion();
         });
 
+        // Load current question and render answer options.
         function loadQuestion() {
             const item = questions[idx];
             document.getElementById('progress').innerText = `Question ${idx + 1} of ${questions.length}`;
@@ -189,6 +189,7 @@
             });
         }
 
+        // Handle answer selection and show correct/wrong feedback.
         function selectOption(button, selectedIdx, correctIdx) {
             const allOptions = document.querySelectorAll('.quiz-option');
             allOptions.forEach(btn => btn.disabled = true);
@@ -203,6 +204,7 @@
             document.getElementById('next-btn').style.display = 'block';
         }
 
+        // Move to the next question or show result after the last question.
         function handleNext() {
             idx++;
             if(idx < questions.length) {
@@ -212,6 +214,7 @@
             }
         }
 
+        // Show final quiz result, set rank, and save score to dashboard.
         function showResult() {
             document.getElementById('quiz-content').style.display = 'none';
             const res = document.getElementById('result-content');
@@ -242,16 +245,18 @@
             document.getElementById('final-score').innerText = `Score: ${score} / ${questions.length} (${Math.round(percentage)}%)`;
             document.getElementById('rank-desc').innerText = desc;
 
-            // Save for Dashboard
+            // Save quiz result ke dashboard untuk ditampilkan nanti.
             localStorage.setItem('score_L1', score);
             localStorage.setItem('userRank', rank);
         }
 
+        // Toggle mobile navigation menu.
         function toggleMenu() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.classList.toggle('active');
         }
 
+        // Logout user and redirect back to login page.
         function logout() {
             if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem("sudahLogin");

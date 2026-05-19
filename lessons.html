@@ -196,18 +196,18 @@
     <p style="text-align: center; margin-top: 20px; color: #666;">🌐 Page Visitors: <span id="page-visitor-count">0</span></p>
 
     <script>
-        // Load user name from stored profile
+        // Load user name from stored profile and show it in the nav.
         document.addEventListener('DOMContentLoaded', () => {
             const savedData = JSON.parse(localStorage.getItem('userProfile'));
             if (savedData && savedData.name) {
                 document.getElementById('nav-user').innerText = savedData.name;
             }
 
-            // Display visitor counts for each lesson
+            // Display saved visitor counts for each lesson card.
             displayVisitorCounts();
         });
 
-        // Track page visitor
+        // Track page visitor when the lessons page finishes loading.
         window.addEventListener('load', function() {
             trackPage('lessons');
         });
@@ -224,7 +224,7 @@
             }
         }
 
-        // Function to display visitor counts from localStorage
+        // Display visitor counts for each lesson button using localStorage.
         function displayVisitorCounts() {
             const lessons = ['vocab', 'grammar', 'idioms', 'literature'];
             lessons.forEach(lesson => {
@@ -236,12 +236,13 @@
             });
         }
 
+        // Toggle mobile navigation menu.
         function toggleMenu() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.classList.toggle('active');
         }
 
-        // Logout Function
+        // Logout Function: clear login flag and return to login page.
         function logout() {
             if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem("sudahLogin");

@@ -149,7 +149,7 @@
         let idx = 0; 
         let score = 0;
 
-        // Track visitor for quiz2
+        // Track visitor for quiz2: simpan kunjungan halaman di localStorage.
         function trackQuizVisitor() {
             const key = 'visitors-quiz2';
             let count = localStorage.getItem(key) || 0;
@@ -158,7 +158,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Track this visitor
             trackQuizVisitor();
             
             const savedData = JSON.parse(localStorage.getItem('userProfile'));
@@ -168,6 +167,7 @@
             loadQuestion();
         });
 
+        // Load current intermediate question and render answer buttons.
         function loadQuestion() {
             const item = questions[idx];
             document.getElementById('progress').innerText = `Question ${idx + 1} of ${questions.length}`;
@@ -197,12 +197,14 @@
             });
         }
 
+        // Move to the next question or show the result page.
         function handleNext() {
             idx++;
             if(idx < questions.length) loadQuestion();
             else showResult();
         }
 
+        // Calculate final rank and show the result screen.
         function showResult() {
             document.getElementById('quiz-content').style.display = 'none';
             const res = document.getElementById('result-content');
@@ -230,16 +232,18 @@
             document.getElementById('final-score').innerText = `Final Score: ${score} / ${questions.length} (${Math.round(percentage)}%)`;
             document.getElementById('rank-desc').innerText = desc;
 
-            // Store scores separately
+            // Store quiz2 score for the dashboard page.
             localStorage.setItem('score_L2', score);
             localStorage.setItem('userRank', rank);
         }
 
+        // Toggle mobile navigation menu.
         function toggleMenu() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.classList.toggle('active');
         }
 
+        // Logout user and redirect to login.
         function logout() {
             if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem("sudahLogin");

@@ -8,23 +8,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <script>
-        // Logic remains the same, redirecting if not logged in
+        // Session check
+        // Jika belum login, pengguna akan diarahkan ke halaman login.
         if (localStorage.getItem("sudahLogin") !== "true") {
             window.location.href = "login.html";
         }
 
+        // Toggle menu untuk tampilan mobile
+        // Mengubah kelas aktif pada menu navigasi sehingga menu dapat dibuka/tutup.
         function toggleMenu() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.classList.toggle('active');
         }
-
-        function logout() {
-            localStorage.removeItem("sudahLogin");
-            window.location.href = "login.html";
-        }
     </script>
 </head>
 <body>
+    <!-- Navbar utama: logo, navigasi, tombol hamburger untuk mobile, dan tombol logout. -->
     <nav>
         <a href="index.html" class="logo">EnglishSpace</a>
         <button class="hamburger" onclick="toggleMenu()">
@@ -42,6 +41,7 @@
         </div>
     </nav>
 
+    <!-- Bagian hero dengan video background dan tombol ajakan bertindak. -->
     <header class="hero-container">
         <div class="video-background">
             <video autoplay muted loop playsinline id="hero-video">
@@ -57,6 +57,7 @@
         </div>
     </header>
 
+    <!-- Section fitur utama: alasan memilih EnglishSpace. -->
     <section class="container section-wrapper">
         <h2 style="color: var(--primary-blue); text-align: center; margin-bottom: 3rem;">Why EnglishSpace?</h2>
         <div class="grid">
@@ -78,6 +79,7 @@
         </div>
     </section>
 
+    <!-- Section jalur pembelajaran: langkah-langkah yang bisa diikuti siswa. -->
     <section class="container section-wrapper">
         <h2 style="color: var(--primary-blue); text-align: center;">Your Path to Mastery</h2>
         <p style="text-align: center; margin-bottom: 3rem; color: gray;">Follow these missions to become an English expert.</p>
@@ -107,12 +109,14 @@
         </div>
     </section>
 
+    <!-- Call to action: ajakan pengguna untuk membuka dashboard. -->
     <section class="container" style="background: linear-gradient(rgba(74, 144, 226, 0.9), rgba(74, 144, 226, 0.9)); color: white; border-radius: 30px; margin-bottom: 50px; text-align: center; padding: 60px 20px;">
         <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem;">Ready to Start Your Journey?</h2>
         <p style="font-size: 1.2rem; margin-bottom: 2rem;">Join thousands of students improving their English skills every day.</p>
         <a href="dashboard.html" class="btn-main" style="background: white; color: var(--primary-blue); font-size: 1.1rem; padding: 15px 40px; border-radius: 30px; font-weight: bold; text-decoration: none;">Open Dashboard</a>
     </section>
 
+    <!-- Section statistik pengunjung yang menampilkan total kunjungan. -->
     <section class="container" style="text-align: center; margin-bottom: 50px;">
         <div style="background: white; padding: 15px 30px; border-radius: 20px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
             <p style="color: gray; font-size: 0.9rem; margin: 0;">
@@ -122,6 +126,7 @@
         </div>
     </section>
 
+    <!-- Footer dengan kontak dan tautan sosial. -->
     <footer style="background:#ffffff; color:#333333; text-align:center; padding:35px 20px; border-top:1px solid #e6e9ef; margin-top:50px;">
         <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-bottom:15px; font-size:0.95rem;">
               <a href="mailto:englishspace.id.f@gmail.com" style="color:#4a90e2; text-decoration:none;">Email: englishspace.id.f@gmail.com</a>
@@ -133,29 +138,31 @@
 
     <script>
         // 1. Update Username from LocalStorage
+        // Memasukkan nama pengguna yang tersimpan ke navigasi jika ada.
         document.addEventListener('DOMContentLoaded', () => {
             const savedData = JSON.parse(localStorage.getItem('userProfile'));
             if (savedData && savedData.name) {
                 document.getElementById('nav-user').innerText = savedData.name;
             }
-            // Fetch visitor count
+            // Ambil jumlah kunjungan dari service eksternal.
             getVisitors();
         });
 
         // 2. Logout Function
+        // Menghapus data login dan mengarahkan pengguna kembali ke halaman login.
         function logout() {
-            if(confirm("Are you sure you want to log out?")) {
+            if (confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem("sudahLogin");
                 window.location.href = "login.html";
             }
         }
 
         // 3. Visitor Counter API
+        // Menambahkan satu pengunjung baru ke hitungan API Counter.
         async function getVisitors() {
             try {
                 const namespace = "englishspace-fadil-2026-v1";
                 const key = "home";
-                
                 const response = await fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`);
                 if (!response.ok) {
                     throw new Error(`visitor counter request failed (${response.status})`);
@@ -171,7 +178,8 @@
             }
         }
 
-        // Track page visitor
+        // 4. Local visitor tracking
+        // Menyimpan jumlah kunjungan halaman lokal di LocalStorage.
         window.addEventListener('load', function() {
             trackPage('index');
         });
@@ -181,8 +189,7 @@
             let count = localStorage.getItem(key) || 0;
             count = parseInt(count) + 1;
             localStorage.setItem(key, count);
-            
-            // No display, as it uses API for total
+            // Hanya menyimpan jumlah kunjungan lokal, tidak ditampilkan secara langsung.
         }
     </script>
 </body>
